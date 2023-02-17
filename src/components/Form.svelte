@@ -3,7 +3,6 @@
    * TODO
    * INTEGRAR LIB PARA MOSTRAR EL JSON CORRECTAMENTE
    * AGREGAR NUEVAMENTE CAMPO DE TEXTO PARA INGRESAR CONTENIDO DIRECTO
-   * AGREGAR SOPORTE A ARCHIVOS CON EXTENSION .EXE
    */
 
   let jsonContent = "";
@@ -56,7 +55,7 @@
         aria-describedby="file_input_help"
         id="file_input"
         type="file"
-        accept=".csv"
+        accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       />
 
       <button

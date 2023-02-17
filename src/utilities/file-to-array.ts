@@ -3,7 +3,7 @@ export const convertFileToArray = (file: string) => {
     .trim()
     .split(/\n/g)
     .reduce<string[][]>(
-      (acum, currentValue) => [...acum, currentValue.split(";")],
+      (acum, currentValue) => [...acum, currentValue.split(/;|,|-/)],
       []
     );
 };

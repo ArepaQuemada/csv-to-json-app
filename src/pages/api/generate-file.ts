@@ -1,15 +1,11 @@
-import { APIRoute } from "astro";
-import { convertFileToArray } from "../../utilities/file-to-array";
-import { arrayToObject } from "../../utilities/array-to-object";
-import { makeJson } from "../../utilities/make-json";
-import { pipe } from "../../utilities/pipe";
+import { readFileData } from "../../utilities/handle-stream";
 
-export const post: APIRoute = async ({ request }) => {
+export const post = async ({ request }) => {
   const data = await request.formData();
   const blobFile = data.get("file") as Blob;
-  const csvText = await blobFile.text();
-  const jsonString = pipe(convertFileToArray, arrayToObject, makeJson)(csvText);
+  const streamReader = blobFile.stream().getReader();
+  const jsonData = await readFileData(streamReader);
   return {
-    body: jsonString,
+    body: jsonData,
   };
 };
