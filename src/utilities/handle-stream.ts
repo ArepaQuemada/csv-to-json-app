@@ -1,26 +1,27 @@
 import { arrayToObject } from "./array-to-object";
 import { convertFileToArray } from "./file-to-array";
 import { makeJson } from "./make-json";
-import { pipe } from "./pipe";
 
 export async function readFileData(streamReader) {
   let responseJsonArray = [];
+  let mainRow: null | string[] = null;
 
-  console.log("PROCCESSING JSON");
   return new Promise((resolve) => {
     streamReader.read().then(function processData({ done, value }) {
       if (done) {
-        console.log("END OF PROCCESS");
-        return resolve(makeJson(responseJsonArray));
+        return resolve(makeJson(responseJsonArray.splice(1)));
       }
 
       const decodedToString = new TextDecoder().decode(value);
+      const convertedMatrix = convertFileToArray(decodedToString);
 
-      const resultArray = pipe(
-        convertFileToArray,
-        arrayToObject
-      )(decodedToString);
-      responseJsonArray = responseJsonArray.concat(resultArray);
+      if (!mainRow) {
+        mainRow = convertedMatrix[0];
+      }
+
+      const arrayObject = arrayToObject(convertedMatrix, mainRow);
+
+      responseJsonArray = responseJsonArray.concat(arrayObject);
       return streamReader.read().then(processData);
     });
   });
