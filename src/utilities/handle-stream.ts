@@ -13,8 +13,6 @@ export async function readFileData(streamReader) {
       }
 
       const decodedToString = new TextDecoder().decode(value);
-      console.log(decodedToString);
-
       const convertedMatrix = convertFileToArray(decodedToString);
 
       if (!mainRow) {
